@@ -1,0 +1,61 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  creationTimestamp: "2024-03-18T17:36:50Z"
+  name: xacmedatabases.acme.com
+spec:
+  compositeTypeRef:
+    apiVersion: acme.com/v1
+    kind: XAcmeDatabase
+  mode: Pipeline
+  pipeline:
+  - functionRef:
+      name: function-patch-and-transform
+    input:
+      apiVersion: pt.fn.crossplane.io/v1beta1
+      environment: null
+      kind: Resources
+      patchSets: []
+      resources:
+      - base:
+          apiVersion: sql.gcp.upbound.io/v1beta1
+          kind: DatabaseInstance
+          spec:
+            forProvider:
+              databaseVersion: POSTGRES_13
+              deletionProtection: false
+              region: us-west2
+              settings:
+              - diskSize: 20
+                tier: db-f1-micro
+            writeConnectionSecretToRef:
+              namespace: crossplane-system
+        connectionDetails:
+        - fromConnectionSecretKey: connectionName
+          name: connectionName
+          type: FromConnectionSecretKey
+        - fromConnectionSecretKey: publicIP
+          name: publicIP
+          type: FromConnectionSecretKey
+        - fromConnectionSecretKey: serverCACertificateCert
+          name: serverCACertificateCert
+          type: FromConnectionSecretKey
+        - name: port
+          type: FromValue
+          value: "5432"
+        name: DBInstance
+        patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.writeConnectionSecretToRef.name
+          transforms:
+          - string:
+              fmt: '%s-postgresql'
+              type: Format
+            type: string
+          type: FromCompositeFieldPath
+        - fromFieldPath: spec.storageGB
+          toFieldPath: spec.forProvider.settings[0].discSize
+          type: FromCompositeFieldPath
+    step: patch-and-transform
+  writeConnectionSecretsToNamespace: crossplane-system
+pace: crossplane-system
