@@ -79,7 +79,12 @@ crossplane beta render post/xr.yaml post/composition-func.yaml post/functions.ya
 
 Aha! The issue is we're patching to the `discSize` field, which is a typo from
 the correct `diskSize` field. We see this immediately when we run the local
-`render` of our Composition.
+`render` of our Composition:
+```yaml
+   settings:
+    - discSize: 100
+      diskSize: 5
+```
 
 Let's fix this minor (but majorly pesky) bug and try again:
 
