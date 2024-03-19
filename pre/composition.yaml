@@ -19,7 +19,7 @@ spec:
             deletionProtection: false
             region: us-west2
             settings:
-              - diskSize: 5
+              - diskSize: 10
                 tier: db-f1-micro
           writeConnectionSecretToRef:
             namespace: crossplane-system

@@ -56,7 +56,7 @@ kubectl get DatabaseInstance -l crossplane.io/claim-name=acme-db-prod -o json | 
 ```
 
 Hmm, wait a minute - we asked for a 100GB database, right? But we're getting one
-that is only 5GB. What could possibly be going wrong here?
+that is only 10GB. What could possibly be going wrong here?
 
 ```
 kubectl get acmedatabase -o json | jq '.items[0].spec.storageGB'
@@ -96,7 +96,7 @@ the correct `diskSize` field. We see this immediately when we run the local
 ```yaml
    settings:
     - discSize: 100
-      diskSize: 5
+      diskSize: 10
 ```
 
 Let's fix this minor (but majorly pesky) bug and try again:
