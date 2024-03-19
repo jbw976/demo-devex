@@ -1,7 +1,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  creationTimestamp: "2024-03-18T17:36:50Z"
+  creationTimestamp: "2024-03-19T10:04:02Z"
   name: xacmedatabases.acme.com
 spec:
   compositeTypeRef:
@@ -54,7 +54,7 @@ spec:
             type: string
           type: FromCompositeFieldPath
         - fromFieldPath: spec.storageGB
-          toFieldPath: spec.forProvider.settings[0].discSize
+          toFieldPath: spec.forProvider.settings[0].diskSize
           type: FromCompositeFieldPath
     step: patch-and-transform
   writeConnectionSecretsToNamespace: crossplane-system

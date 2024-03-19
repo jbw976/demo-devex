@@ -27,9 +27,10 @@ kubectl apply -f providerconfig.yaml
 
 ## Deploy platform (the hard way)
 
-Using an older (and more challenging) experience of Crossplane, test the
-platform your building by deploying to a live cluster to provisioning real world
-resources. That's not really that efficient, is it?
+Using an older (and more challenging) experience of Crossplane, you would need
+to test the platform you're building by deploying to a live control plane and
+provisioning real world resources. That's slow, expensive, and who really has
+the patience for that?
 
 ```
 kubectl apply -f pre/definition.yaml
@@ -37,21 +38,33 @@ kubectl apply -f pre/composition.yaml
 kubectl get xrd
 ```
 
-Now we can test the platform we've build by provisioning the `AcmeDatabase`
+Now we can test the platform we've built by provisioning an `AcmeDatabase`
 resource:
 ```
 kubectl apply -f pre/claim.yaml
 ```
 
-Hmm, wait a minute - we asked for a 100GB database, but we're getting one that
-is only 5GB. What could possibly be going wrong here?
+Let's examine the database we just requested:
 ```
-crossplane beta trace acmedatabases acme-db-prod kubectl get managed kubectl get
-DatabaseInstance -l crossplane.io/claim-name=acme-db-prod -o yaml
+crossplane beta trace acmedatabases acme-db-prod
+kubectl get managed
 ```
 
-This is a long tough cycle to debug. Isn't there a better way to iterate on my
-platform instead of provisioning live resources and seeing what happens?
+Let's check the database settings in GCP:
+```
+kubectl get DatabaseInstance -l crossplane.io/claim-name=acme-db-prod -o json | jq '.items[0].spec.forProvider.settings'
+```
+
+Hmm, wait a minute - we asked for a 100GB database, right? But we're getting one
+that is only 5GB. What could possibly be going wrong here?
+
+```
+kubectl get acmedatabase -o json | jq '.items[0].spec.storageGB'
+```
+
+Creating real resources and waiting for them is a long tough cycle to debug.
+Isn't there a better way to iterate on my platform instead of provisioning live
+resources and seeing what happens?
 
 
 ## Platform iteration made easier with Functions & DevEx
