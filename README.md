@@ -119,5 +119,8 @@ When we're done, make sure to clean up any cloud resources we created:
 ```
 kubectl delete -f pre/claim.yaml
 kubectl get managed
+kubectl delete -f pre/definition.yaml
+kubectl delete -f pre/composition.yaml
+kubectl get xrd
 kind delete cluster
 ```
