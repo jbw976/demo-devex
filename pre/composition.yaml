@@ -30,7 +30,7 @@ spec:
             - type: string
               string:
                 fmt: "%s-postgresql"
-        # buggy patch! the field is actually diskSize
+        # buggy patch! the field name is wrong
         - fromFieldPath: spec.storageGB
           toFieldPath: spec.forProvider.settings[0].discSize
       connectionDetails:

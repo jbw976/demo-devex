@@ -46,7 +46,8 @@ kubectl apply -f pre/claim.yaml
 
 Let's examine the database we just requested:
 ```
-crossplane beta trace acmedatabases acme-db-prod
+kubectl get claim
+kubectl get composite
 kubectl get managed
 ```
 
