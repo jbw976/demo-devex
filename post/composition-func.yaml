@@ -58,4 +58,3 @@ spec:
           type: FromCompositeFieldPath
     step: patch-and-transform
   writeConnectionSecretsToNamespace: crossplane-system
-ace: crossplane-system
