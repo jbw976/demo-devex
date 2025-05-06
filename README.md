@@ -88,7 +88,7 @@ laptop! No need to provision live resources in the cloud on a live control
 plane, we can get instant feedback as we make changes!
 
 ```
-crossplane beta render post/xr.yaml post/composition-func.yaml post/functions.yaml
+crossplane render post/xr.yaml post/composition-func.yaml post/functions.yaml
 ```
 
 Aha! The issue is we're patching to the `discSize` field, which is a typo from
@@ -103,14 +103,14 @@ the correct `diskSize` field. We see this immediately when we run the local
 Let's fix this minor (but majorly pesky) bug and try again:
 
 ```
-crossplane beta render post/xr.yaml post/composition-func.yaml post/functions.yaml
+crossplane render post/xr.yaml post/composition-func.yaml post/functions.yaml
 ```
 
 To be even more confident that we're building a correct composition, let's also
 run `validate` to verify all the generated resources are compliant with their
 schemas:
 ```
-crossplane beta render post/xr.yaml post/composition-func.yaml post/functions.yaml -x | crossplane beta validate post/extensions.yaml --cache-dir="${HOME}/.crossplane/cache" -
+crossplane render post/xr.yaml post/composition-func.yaml post/functions.yaml -x | crossplane beta validate post/extensions.yaml --cache-dir="${HOME}/.crossplane/cache" -
 ```
 
 ### Clean up
